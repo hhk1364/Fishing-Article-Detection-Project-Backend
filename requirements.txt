@@ -61,7 +61,6 @@ mccabe==0.6.1
 missingno==0.5.1
 mistune==0.8.4
 mypy-extensions==0.4.3
-navigator-updater==0.2.1
 numpy==1.19.5
 oauthlib==3.2.2
 olefile==0.46
