@@ -1,6 +1,4 @@
 absl-py==0.15.0
-anaconda-client==1.7.2
-anaconda-navigator==2.0.3
 appdirs==1.4.4
 argh==0.26.2
 asgiref==3.6.0
@@ -75,7 +73,6 @@ navigator-updater==0.2.1
 numpy==1.19.5
 oauthlib==3.2.2
 olefile==0.46
-opencv-python==4.5.5.62
 opt-einsum==3.3.0
 outcome==1.2.0
 parso==0.7.0
