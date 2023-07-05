@@ -12,6 +12,12 @@ from bs4 import BeautifulSoup
 def index(request) :
     return render(request, '')
 
+# 커스텀 직렬화 함수를 사용하여 set을 직렬화하는 예시
+def set_serializer(obj):
+    if isinstance(obj, set):
+        return list(obj)
+    raise TypeError('Object of type set is not JSON serializable')
+
 @csrf_exempt
 @require_POST
 def getTitleContentUsingByHref(request) :
@@ -42,16 +48,13 @@ def getTitleContentUsingByHref(request) :
 
         content.append(article)
 
-    
-    sebu1_result = sebu1_model(title, content)
-    sebu2_result = sebu2_model(title, content)
+        sebu1_result = sebu1_model(title, content)
+        sebu2_result = sebu2_model(title, content)
 
-    result = {}
+        result = {"sebu1_result" : str(sebu1_result), "sebu2_result" : str(sebu2_result)}
 
-    result.update({"sebu1_result", sebu1_result})
-    result.update({"sebu2_result", sebu2_result})
+    return JsonResponse(result)
 
-    return JsonResponse({'response': result})
 
 
 # 1세부 예측 모델
