@@ -12,13 +12,13 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
-# #  HTTPS를 통해 리버스 프록시 서버를 사용하는 경우, 프록시 서버가 HTTPS를 감지하도록 설정
-# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-# #  모든 HTTP 요청을 HTTPS로 리디렉션
-# SECURE_SSL_REDIRECT = True
-# #  SESSION_COOKIE_SECURE 및 CSRF_COOKIE_SECURE: 세션 쿠키와 CSRF 토큰 쿠키를 HTTPS로만 전송하도록 설정
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+#  HTTPS를 통해 리버스 프록시 서버를 사용하는 경우, 프록시 서버가 HTTPS를 감지하도록 설정
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+#  모든 HTTP 요청을 HTTPS로 리디렉션
+SECURE_SSL_REDIRECT = True
+#  SESSION_COOKIE_SECURE 및 CSRF_COOKIE_SECURE: 세션 쿠키와 CSRF 토큰 쿠키를 HTTPS로만 전송하도록 설정
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
