@@ -2,7 +2,7 @@ urllib3==1.26.6
 beautifulsoup4==4.6.0
 dill==0.3.6
 distlib==0.3.6
-Django==2.2.9
+Django==4.2.3
 django-init==0.0.1.7
 h5py==3.1.0
 json5==0.9.5
@@ -10,3 +10,6 @@ Markdown==3.4.3
 numpy==1.19.5
 virtualenv==20.13.2
 webdriver-manager==3.5.2
+certifi==2023.5.7
+django-cors-headers==4.1.0
+django-sslserver==0.22
