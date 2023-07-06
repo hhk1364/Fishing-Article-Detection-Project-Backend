@@ -19,5 +19,5 @@ from api_server import views
 
 urlpatterns = [
     path('api/', include('api.urls')),
-    path('', views.index)
+    path('/', views.index)
 ]
