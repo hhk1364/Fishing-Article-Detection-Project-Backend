@@ -9,8 +9,9 @@ import requests
 
 from bs4 import BeautifulSoup
 
-def index(request) :
-    return render(request, '')
+
+def index(request):
+ return HttpResponse('<h1>Hello, world!</h1>')
 
 # 커스텀 직렬화 함수를 사용하여 set을 직렬화하는 예시
 def set_serializer(obj):
