@@ -2,7 +2,7 @@ urllib3==1.26.6
 beautifulsoup4==4.6.0
 dill==0.3.6
 distlib==0.3.6
-Django==4.2.3
+Django==2.2.9
 django-init==0.0.1.7
 h5py==3.1.0
 json5==0.9.5
