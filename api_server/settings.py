@@ -12,14 +12,16 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
-#  HTTPS를 통해 리버스 프록시 서버를 사용하는 경우, 프록시 서버가 HTTPS를 감지하도록 설정
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-#  모든 HTTP 요청을 HTTPS로 리디렉션
-SECURE_SSL_REDIRECT = True
-#  SESSION_COOKIE_SECURE 및 CSRF_COOKIE_SECURE: 세션 쿠키와 CSRF 토큰 쿠키를 HTTPS로만 전송하도록 설정
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# #  HTTPS를 통해 리버스 프록시 서버를 사용하는 경우, 프록시 서버가 HTTPS를 감지하도록 설정
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# #  모든 HTTP 요청을 HTTPS로 리디렉션
+# SECURE_SSL_REDIRECT = True
+# #  SESSION_COOKIE_SECURE 및 CSRF_COOKIE_SECURE: 세션 쿠키와 CSRF 토큰 쿠키를 HTTPS로만 전송하도록 설정
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -35,15 +37,17 @@ SECRET_KEY = 'a=9^b5f+q^7*8xv9kz&2=o#mddn=#3o775%_r)2!x$@z8*=!+@'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
+    ".43.201.247.96"
+    ".happycorder.store",
+    '.127.0.0.1',
     ".ap-northeast-2.compute.amazonaws.com"
 ]
-
 
 # Application definition
 
 INSTALLED_APPS = [
     'api',
+    'corsheaders',
     'sslserver',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,6 +58,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+      'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
