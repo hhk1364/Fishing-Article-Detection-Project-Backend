@@ -9,6 +9,8 @@ from tqdm import tqdm
 import pandas as pd
 from torch.utils.data import Dataset, DataLoader
 import torch
+import torch.nn.functional as F
+
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, RobertaForSequenceClassification, AdamW
 import re
 import os
@@ -18,6 +20,7 @@ import requests
 
 from bs4 import BeautifulSoup
 from datetime import datetime
+import numpy as np
 
 base_dir =  settings.BASE_DIR
 device=torch.device('cpu')
@@ -28,9 +31,7 @@ tokenizer1 = AutoTokenizer.from_pretrained(HUGGINGFACE_MODEL_PATH)
 model_file_path1 =  base_dir + "/api/models/1model.pth"
 checkpoint = torch.load(model_file_path1, map_location=device)
 model1 = RobertaForSequenceClassification.from_pretrained(HUGGINGFACE_MODEL_PATH, num_labels=2)
-optimizer = AdamW(model1.parameters(), lr=2e-5, correct_bias=False)
 model1.load_state_dict(checkpoint['model_state_dict'])
-optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
 model1.eval()
 
@@ -134,18 +135,10 @@ def getTitleContentUsingByHref(request) :
     now = datetime.now()
     print("2세부 끝", now.strftime('%Y-%m-%d %H:%M:%S'))
 
-    result = {"link" : link, "sebu1_result" : sebu1_result, "sebu2_result" : sebu2_result}
+    result = {"link" : link, 
+              "sebu1_result" : sebu1_result, 
+              "sebu2_result" : sebu2_result}
 
-    data = {
-            'link' : link,
-            'title': title,
-            'content': content,
-            # "1세부결과" : sebu1_result,
-            # "2세부결과" : sebu2_result
-        }
-
-    df = pd.DataFrame(data)
-    df.to_csv("C:/Users/ADMIN/Desktop/webresult/webresult.csv",  encoding="utf-8-sig")
     print("끝", len(df))
 
 
@@ -180,7 +173,7 @@ def sebu1_model(df) :
             attention_mask = batch['attention_mask']
 
             outputs = model1(input_ids, attention_mask=attention_mask)
-            probs = torch.sigmoid(outputs.logits)
+            probs = torch.softmax(outputs.logits, dim=1)
             prob_class_1 = probs[:, 1].cpu().numpy()
 
             predictions.extend(prob_class_1)
@@ -196,35 +189,38 @@ def sebu1_model(df) :
 # 2세부 예측 모델
 def sebu2_model(df) :
     
-    result = []
-
     global tokenizer2
     global model2
 
+    result = []
+
     with torch.no_grad():
+        
         for idx, row in df.iterrows():
+            
             if(row['title'] == "" and row['content'] == "") :
                 result.append("내용없음")
             else :
                 title = Preprocessing(row['title'])
                 content = Preprocessing(row['content'])
                 groups = group_sentences(title, content)
-                min_prob = [float('inf'), float('inf')]
+                class1_probs = []
 
                 for group in groups:
                     inputs = tokenizer2(group, return_tensors="pt", truncation=True, padding=True)
                     outputs = model2(**inputs)
-                    probabilities = torch.sigmoid(outputs.logits)
-                    class0_probability = probabilities[0][0].item()
-                    class1_probability = probabilities[0][1].item()
+                    probabilities = F.softmax(outputs.logits, dim=-1)
+                    class1_probs.append(probabilities[0][1].item())  
 
-                    if class1_probability < min_prob[1]:
-                        min_prob = [class0_probability, class1_probability]
-
-                result.append(str(min_prob[1]))
+                min_class1_prob = min(class1_probs) if class1_probs else None
+                result.append(min_class1_prob)
 
     return result
-        
+
+# 
+#  2세부 함수 시작
+# 
+
 # 정규식
 def Preprocessing(text):
     if not isinstance(text, str):
@@ -234,15 +230,14 @@ def Preprocessing(text):
     text = re.sub(r"\s+", " ", text)
     text = text.strip()
     return text
-
 # 토큰 붙이기
-def group_sentences(title, content, max_length=500):
+def group_sentences(title, content, max_length=350):
     sentences = content.split('.')
     groups = []
     current_group = title + " [SEP] "
 
     for sentence in sentences:
-        sentence = sentence.strip() + ". "
+        sentence = sentence.strip() + "다. "
         new_group = current_group + sentence
         if len(new_group) <= max_length:
             current_group = new_group
@@ -255,6 +250,9 @@ def group_sentences(title, content, max_length=500):
 
     return groups
 
+# 
+#  1세부 함수 시작
+# 
 
 # 예외처리
 def process_empty_values(row):
