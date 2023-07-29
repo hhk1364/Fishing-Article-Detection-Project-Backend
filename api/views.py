@@ -710,7 +710,10 @@ def getTitleContentUsingByHref(request) :
                 pass
     
     data = {
-        'success' : 'success'
+            'link' : link,
+            'sebu1_result': sebu1_result,
+            'sebu2_result': sebu2_result,
+            'gwango_2sebu': gwango_result
     }
 
     return JsonResponse(data)
