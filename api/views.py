@@ -216,22 +216,25 @@ def getResultUsingByHref(request) :
     
     href_list = request_data['href']
 
-    for href in href_list :
-            try:
-                # 데이터베이스에서 해당 링크에 해당하는 데이터를 조회합니다.
-                result = TbFishingDataM.objects.get(link=href)
-                link.append(href)
-                sebu1_result.append(str(result.number_1sebu))
-                sebu2_result.append(str(result.number_2sebu))
-                gwango_result.append(str(result.gwango))
-                suspicious_sentences.append(result.suspicious_sentences)
-            except TbFishingDataM.DoesNotExist:
-                link.append(href)
-                sebu1_result.append("결과 없음")
-                sebu2_result.append("결과 없음")
-                gwango_result.append("결과 없음")
-                suspicious_sentences.append("")
-                pass
+    try :
+        for href in href_list :
+                try:
+                    # 데이터베이스에서 해당 링크에 해당하는 데이터를 조회합니다.
+                    result = TbFishingDataM.objects.get(link=href)
+                    link.append(href)
+                    sebu1_result.append(str(result.number_1sebu))
+                    sebu2_result.append(str(result.number_2sebu))
+                    gwango_result.append(str(result.gwango))
+                    suspicious_sentences.append(result.suspicious_sentences)
+                except TbFishingDataM.DoesNotExist:
+                    link.append(href)
+                    sebu1_result.append("결과 없음")
+                    sebu2_result.append("결과 없음")
+                    gwango_result.append("결과 없음")
+                    suspicious_sentences.append("")
+                    pass
+    except : 
+        pass
 
     data = {
         'link' : link,
