@@ -600,8 +600,8 @@ def gwango_model(df) :
 
 
 # 안씀
-# @csrf_exempt
-# @require_POST
+@csrf_exempt
+@require_POST
 def getTitleContentUsingByHref(request) :
     
     title = list()
