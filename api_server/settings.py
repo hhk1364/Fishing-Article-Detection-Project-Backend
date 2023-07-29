@@ -37,7 +37,7 @@ SECRET_KEY = 'a=9^b5f+q^7*8xv9kz&2=o#mddn=#3o775%_r)2!x$@z8*=!+@'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "3.35.26.21",
+    "43.201.90.86",
     "happycorder.store",
     '127.0.0.1',
     "ec2-3-35-26-21.ap-northeast-2.compute.amazonaws.com"
@@ -58,7 +58,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-      'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -89,16 +89,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api_server.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'fishing',
+        'USER': 'fishing',
+        'PASSWORD': 'fishingMan@3',
+        'HOST': '146.56.153.118',  # Or the MySQL server's IP address
+        'PORT': '3306',       # Default MySQL port is 3306
+    }
+}
 
 
 # Password validation
