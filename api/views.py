@@ -207,8 +207,6 @@ def set_serializer(obj):
 def getResultUsingByHref(request) :
 
     link = list()
-    title = list()
-    content = list()
     sebu1_result = list()
     sebu2_result = list()
     gwango_result = list()
@@ -233,6 +231,7 @@ def getResultUsingByHref(request) :
                 sebu2_result.append("결과 없음")
                 gwango_result.append("결과 없음")
                 suspicious_sentences.append("")
+                pass
 
     data = {
         'link' : link,
